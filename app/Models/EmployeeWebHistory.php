@@ -15,4 +15,24 @@ class EmployeeWebHistory extends Model
 	protected $fillable = [
 		'ip_address', 'url','date'
 	];
+
+	public function getAll()
+	{
+		return $this->withTrashed()->get();
+	}
+
+	public function find($ip_address)
+	{
+		return $this->where('ip_address',$ip_address)->get();
+	}
+
+    public function store($request)
+    {                
+        return $this->create($request->all());
+    }
+
+	public function deleteEmpWebHistory($ip_address)
+	{
+		return $this->where('ip_address',$ip_address)->delete();
+	}
 }

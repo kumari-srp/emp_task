@@ -13,15 +13,20 @@ class Employee extends Model
 	protected $dates = ['deleted_at'];
 
 	protected $fillable = [
-		'emp_id', 'epm_name','ip_address'
+		'emp_id', 'emp_name','ip_address'
 	];
+
+	public function getAllEmp()
+	{
+		return $this->withTrashed()->get();
+	}
 
 	public function getEmpdata($ip_address)
 	{
 		return $this->where('ip_address',$ip_address)->first();
 	}
 
-    public function storeEmployeeData($request)
+    public function storeAll($request)
     {                
         return $this->create($request->all());
     }

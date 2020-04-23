@@ -19,12 +19,12 @@ Route::get('/user', function (Request $request) {
 
 //Employee
 Route::get('employees', 'EmployeeController@index');
-Route::get('employees/{ip_address}', 'EmployeeController@getEmployee');
-Route::post('employees', 'EmployeeController@store');
-Route::delete('employees/{ip_address}', 'EmployeeController@deleteEmployee');
+Route::get('employees/{ip_address}', 'EmployeeController@get');
+Route::post('employees', 'EmployeeController@set');
+Route::delete('employees/{ip_address}', 'EmployeeController@delete');
 
 //Employee web History
 Route::get('empwebhistory', 'EmpWebHistoryController@index');
-Route::get('empwebhistory/{ip_address}', 'EmpWebHistoryController@show');
-Route::post('empwebhistory', 'EmpWebHistoryController@store');
+Route::get('empwebhistory/{ip_address}', 'EmpWebHistoryController@get');
+Route::post('empwebhistory', 'EmpWebHistoryController@set');
 Route::delete('empwebhistory/{ip_address}', 'EmpWebHistoryController@delete');

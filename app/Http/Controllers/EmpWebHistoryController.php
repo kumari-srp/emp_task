@@ -4,44 +4,53 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EmployeeWebHistory;
+use App\Models\Employee;
 
 class EmpWebHistoryController extends Controller
 {
     public function index()
     {
-        $emp = EmployeeWebHistory::all();
-        return $emp;
+        $emp_web_history=(new EmployeeWebHistory)->getAll();
+        return $emp_web_history;
     }
 
-    public function show($ip_address)
+    public function get($ip_address)
     {   
-        $employee = EmployeeWebHistory::where('ip_address', $ip_address)->get();
-        if( $employee ){
-            return response($employee, 200);
+        $emp_web_history=(new EmployeeWebHistory)->find($ip_address);
+
+        if( $emp_web_history ){
+            return response($emp_web_history, 200);
         }
         return response()->json([
           "message" => "Resourse not found"
       ], 404);
     }
 
-    public function store(Request $request)
-    {        
-        $employee = new EmployeeWebHistory;
-        $employee->ip_address = $request->ip_address;
-        $employee->url = $request->url;
-        $employee->date = $request->date;
-        $employee->save();
+    public function set(Request $request)
+    {    
+        $employee=(new Employee)->getEmpdata($request->ip_address);
 
-        return response()->json([
-            "message" => "Record created"
-        ], 201);
+        if($employee)
+        {    
+            $employee_web_history=(new EmployeeWebHistory)->store($request);
+
+            return response()->json([
+                "message" => "Record created"
+            ], 201);
+        }else{
+            return response()->json([
+              "message" => "Employee IP Address not found"
+          ], 404);
+        }
     }
 
     public function delete($ip_address)
     {
-        if(EmployeeWebHistory::where('ip_address', $ip_address)->exists()) 
+        $emp_web_history=(new EmployeeWebHistory)->find($ip_address);
+
+        if( $emp_web_history )
         {
-            $employee = EmployeeWebHistory::where('ip_address', $ip_address)->delete();
+            $employee_web_history = (new EmployeeWebHistory)->deleteEmpWebHistory($ip_address);
 
             return response()->json([
                 "message" => "records deleted"
